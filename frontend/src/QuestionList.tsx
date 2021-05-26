@@ -30,16 +30,18 @@ const listItemStyle = css`
     }
 `;
 
-export const QuestionList: FC<Props> = ({ data, renderItem }) => (
-    <ul css={listStyle}>
-        {data.map((question) => (
-            <li key={question.questionId} css={listItemStyle}>
-                {renderItem ? (
-                    renderItem(question)
-                ) : (
-                    <Question data={question} />
-                )}
-            </li>
-        ))}
-    </ul>
-);
+export const QuestionList: FC<Props> = ({ data, renderItem }) => {
+    return (
+        <ul css={listStyle}>
+            {data.map((question) => (
+                <li key={question.questionId} css={listItemStyle}>
+                    {renderItem ? (
+                        renderItem(question)
+                    ) : (
+                        <Question data={question} />
+                    )}
+                </li>
+            ))}
+        </ul>
+    );
+};

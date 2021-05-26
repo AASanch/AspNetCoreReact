@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 
 import { fontFamily, fontSize, gray1, gray2, gray5 } from "./Styles";
 
-import React from "react";
+import { ChangeEvent } from "react";
 import { UserIcon } from "./UserIcon";
 
 export const Header = () => {
@@ -60,12 +60,21 @@ export const Header = () => {
         }
     `;
 
+    const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.currentTarget.value);
+    };
+
     return (
         <div css={outerDivStyle}>
             <a href="." css={qaAnchorStyle}>
                 Q & A
             </a>
-            <input type="text" placeholder="Search..." css={searchInputStyle} />
+            <input
+                type="text"
+                placeholder="Search..."
+                css={searchInputStyle}
+                onChange={handleSearchInputChange}
+            />
             <a href="./signin" css={signInAnchorStyle}>
                 <UserIcon />
                 <span>Sign In</span>
