@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-
 import { fontFamily, fontSize, gray1, gray2, gray5 } from "./Styles";
-
 import { ChangeEvent } from "react";
 import { UserIcon } from "./UserIcon";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
     const outerDivStyle = css`
@@ -66,19 +65,19 @@ export const Header = () => {
 
     return (
         <div css={outerDivStyle}>
-            <a href="." css={qaAnchorStyle}>
+            <Link to="/" css={qaAnchorStyle}>
                 Q & A
-            </a>
+            </Link>
             <input
                 type="text"
                 placeholder="Search..."
                 css={searchInputStyle}
                 onChange={handleSearchInputChange}
             />
-            <a href="./signin" css={signInAnchorStyle}>
+            <Link to="/signin" css={signInAnchorStyle}>
                 <UserIcon />
                 <span>Sign In</span>
-            </a>
+            </Link>
         </div>
     );
 };

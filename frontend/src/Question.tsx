@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 import { FC } from "react";
 import { QuestionData } from "./QuestionData";
 import { gray2, gray3 } from "./Styles";
+import { Link } from "react-router-dom";
 
 interface Props {
     data: QuestionData;
@@ -33,7 +34,9 @@ const footerStyle = css`
 
 export const Question: FC<Props> = ({ data, showContent = true }) => (
     <div css={outerDivStyle}>
-        <div css={titleDivStyle}>{data.title}</div>
+        <Link to={`questions/${data.questionId}`} css={titleDivStyle}>
+            {data.title}
+        </Link>
         {showContent && (
             <div css={contentDivStyle}>
                 {data.content.length > 50

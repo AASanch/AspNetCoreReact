@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import { PrimaryButton } from "./Styles";
 import { QuestionList } from "./QuestionList";
 import { getUnansweredQuestions, QuestionData } from "./QuestionData";
 import { Page } from "./Page";
 import { PageTitle } from "./PageTitle";
+import { RouteComponentProps } from "react-router-dom";
 
 const outerDivStyle = css`
     margin: 50px auto 20px auto;
@@ -19,7 +20,7 @@ const innerDivStyle = css`
     justify-content: space-between;
 `;
 
-export const HomePage = () => {
+export const HomePage: FC<RouteComponentProps> = ({ history }) => {
     const [questions, setQuestions] = useState<QuestionData[] | null>(null);
     const [questionsLoading, setQuestionsLoading] = useState(true);
 
@@ -44,7 +45,7 @@ export const HomePage = () => {
     );
 
     const handleAskQuestionClick = () => {
-        console.log("TODO - move to the AskPage");
+        history.push("/ask");
     };
 
     return (
