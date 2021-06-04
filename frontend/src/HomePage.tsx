@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React from "react";
+import { useEffect, useState, FC } from "react";
 import { PrimaryButton } from "./Styles";
 import { QuestionList } from "./QuestionList";
-import { getUnansweredQuestions } from "./QuestionData";
+import { getUnansweredQuestions, QuestionData } from "./QuestionData";
 import { Page } from "./Page";
 import { PageTitle } from "./PageTitle";
+import { RouteComponentProps } from "react-router-dom";
 
 const outerDivStyle = css`
     margin: 50px auto 20px auto;
@@ -19,14 +20,49 @@ const innerDivStyle = css`
     justify-content: space-between;
 `;
 
-export const HomePage = () => (
-    <Page>
-        <div css={outerDivStyle}>
-            <div css={innerDivStyle}>
-                <PageTitle>Unanswered Questions</PageTitle>
-                <PrimaryButton>Ask a question</PrimaryButton>
-            </div>
-            <QuestionList data={getUnansweredQuestions()} />
+export const HomePage: FC<RouteComponentProps> = ({ history }) => {
+    const [questions, setQuestions] = useState<QuestionData[] | null>(null);
+    const [questionsLoading, setQuestionsLoading] = useState(true);
+
+    useEffect(() => {
+        const doGetUnansweredQuestions = async () => {
+            const unansweredQuestions = await getUnansweredQuestions();
+            setQuestions(unansweredQuestions);
+            setQuestionsLoading(false);
+        };
+        doGetUnansweredQuestions();
+    }, []);
+
+    const Loading = () => (
+        <div
+            css={css`
+                font-size: 16px;
+                font-style: italic;
+            `}
+        >
+            Loading...
         </div>
-    </Page>
-);
+    );
+
+    const handleAskQuestionClick = () => {
+        history.push("/ask");
+    };
+
+    return (
+        <Page>
+            <div css={outerDivStyle}>
+                <div css={innerDivStyle}>
+                    <PageTitle>Unanswered Questions</PageTitle>
+                    <PrimaryButton onClick={handleAskQuestionClick}>
+                        Ask a question
+                    </PrimaryButton>
+                </div>
+                {questionsLoading ? (
+                    <Loading />
+                ) : (
+                    <QuestionList data={questions || []} />
+                )}
+            </div>
+        </Page>
+    );
+};
