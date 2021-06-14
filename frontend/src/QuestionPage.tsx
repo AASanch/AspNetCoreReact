@@ -5,10 +5,10 @@ import { gray3, gray6 } from "./Styles";
 import { FC, useState, useEffect } from "react";
 import { Page } from "./Page";
 import { RouteComponentProps } from "react-router-dom";
-import { QuestionData, getQuestion } from "./QuestionData";
+import { QuestionData, getQuestion, postAnswer } from "./QuestionData";
 import { AnswerList } from "./AnswerList";
 
-import { Form } from "./Form";
+import { Form, required, minLength, Values } from "./Form";
 import { Field } from "./Field";
 
 interface RouteParams {
@@ -57,6 +57,17 @@ export const QuestionPage: FC<RouteComponentProps<RouteParams>> = ({
         color: ${gray3};
     `;
 
+    const handleSubmit = async (values: Values) => {
+        const result = await postAnswer({
+            questionId: question!.questionId,
+            content: values.content,
+            userName: "Fred",
+            created: new Date(),
+        });
+
+        return { success: result ? true : false };
+    };
+
     return (
         <Page>
             <div css={outerDivStyle}>
@@ -78,7 +89,18 @@ export const QuestionPage: FC<RouteComponentProps<RouteParams>> = ({
                                 margin-top: 20px;
                             `}
                         >
-                            <Form submitCaption="Submit Your Answer">
+                            <Form
+                                submitCaption="Submit Your Answer"
+                                validationRules={{
+                                    content: [
+                                        { validator: required },
+                                        { validator: minLength, arg: 50 },
+                                    ],
+                                }}
+                                onSubmit={handleSubmit}
+                                failureMessage="There was a problem with your answer"
+                                successMessage="Your answer was successfully submitted"
+                            >
                                 <Field
                                     name="content"
                                     label="Your Answer"

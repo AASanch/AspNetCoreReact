@@ -1,11 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { fontFamily, fontSize, gray1, gray2, gray5 } from "./Styles";
-import { ChangeEvent } from "react";
+import { FC, useState, ChangeEvent, FormEvent } from "react";
 import { UserIcon } from "./UserIcon";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
-export const Header = () => {
+const Header: FC<RouteComponentProps> = ({ history, location }) => {
+    const searchParams = new URLSearchParams(location.search);
+    const criteria = searchParams.get("criteria") || "";
+
+    const [search, setSearch] = useState(criteria);
+
     const outerDivStyle = css`
         position: fixed;
         box-sizing: border-box;
@@ -60,7 +65,12 @@ export const Header = () => {
     `;
 
     const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(e.currentTarget.value);
+        setSearch(e.currentTarget.value);
+    };
+
+    const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        history.push(`/search?criteria=${search}`);
     };
 
     return (
@@ -68,12 +78,15 @@ export const Header = () => {
             <Link to="/" css={qaAnchorStyle}>
                 Q & A
             </Link>
-            <input
-                type="text"
-                placeholder="Search..."
-                css={searchInputStyle}
-                onChange={handleSearchInputChange}
-            />
+            <form onSubmit={handleSearchSubmit}>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    css={searchInputStyle}
+                    onChange={handleSearchInputChange}
+                />
+            </form>
+
             <Link to="/signin" css={signInAnchorStyle}>
                 <UserIcon />
                 <span>Sign In</span>
@@ -81,3 +94,5 @@ export const Header = () => {
         </div>
     );
 };
+
+export const HeaderWithRouter = withRouter(Header);

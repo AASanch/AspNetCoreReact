@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 
-import { Header } from "./Header";
+import { HeaderWithRouter as Header } from "./Header";
 import { HomePage } from "./HomePage";
 import { fontFamily, fontSize, gray2 } from "./Styles";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
@@ -13,7 +13,7 @@ import { lazy, Suspense } from "react";
 
 const AskPage = lazy(() => import("./AskPage"));
 
-function App() {
+const App: React.FC = () => {
     const rootDivStyle = css`
         font-family: ${fontFamily};
         font-size: ${fontSize};
@@ -53,6 +53,6 @@ function App() {
             </div>
         </BrowserRouter>
     );
-}
+};
 
 export default App;
